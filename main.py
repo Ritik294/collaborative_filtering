@@ -4,6 +4,8 @@ from src.data_preparation import load_data, clean_ratings, filter_active_users_a
 from src.helper import split_data_by_user
 from src.model import create_ratings_matrix, compute_user_similarity, predict_for_test
 import numpy as np
+import matplotlib.pyplot as plt
+
 
 # File paths
 users_path = 'D:/vscode/collaborative_filtering/data/Users.csv'  
@@ -22,10 +24,30 @@ train_set, test_set = split_data_by_user(ratings_filtered, train_ratio=0.75, ran
 ratings_matrix = create_ratings_matrix(train_set)
 similarity_df = compute_user_similarity(ratings_matrix)
 
-# Predict ratings for the test set using a specific k value (e.g., 5)
-predictions = predict_for_test(test_set, ratings_matrix, similarity_df, k=5)
 
-# Evaluate the predictions using Mean Absolute Difference (MAD)
-actual_ratings = test_set['Book-Rating'].values
-mad = np.mean(np.abs(actual_ratings - predictions))
-print("MAD (k=5):", mad)
+# predictions = predict_for_test(test_set, ratings_matrix, similarity_df, k=5)
+
+# # Evaluate the predictions using Mean Absolute Difference (MAD)
+# actual_ratings = test_set['Book-Rating'].values
+# mad = np.mean(np.abs(actual_ratings - predictions))
+# print("MAD (k=5):", mad)
+# List of k values to try
+k_values = [5, 10, 15, 20, 50, 100]
+mad_results = {}
+
+for k in k_values:
+    predictions = predict_for_test(test_set, ratings_matrix, similarity_df, k=k)
+    actual_ratings = test_set['Book-Rating'].values
+    mad = np.mean(np.abs(actual_ratings - predictions))
+    mad_results[k] = mad
+    print(f"MAD (k={k}): {mad}")
+
+
+
+plt.figure(figsize=(8, 5))
+plt.plot(list(mad_results.keys()), list(mad_results.values()), marker='o')
+plt.xlabel("Neighborhood Size (k)")
+plt.ylabel("Mean Absolute Difference (MAD)")
+plt.title("MAD vs. Neighborhood Size")
+plt.grid(True)
+plt.show()

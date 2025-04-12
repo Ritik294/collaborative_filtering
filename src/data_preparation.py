@@ -3,7 +3,11 @@ import pandas as pd
 def load_data(users_path: str, books_path: str, ratings_path: str):
 
     users = pd.read_csv(users_path)
-    books = pd.read_csv(books_path)
+    books_dtype = {
+        "ISBN": str,
+        "Year-Of-Publication": str
+    }
+    books = pd.read_csv(books_path, low_memory=False, dtype=books_dtype)
     ratings = pd.read_csv(ratings_path)
     
     return users, books, ratings
