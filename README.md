@@ -64,18 +64,41 @@ The project uses three main CSV files:
 With a fixed train/test split (75% training), the model was evaluated using different neighborhood sizes:  
 - k = 5, 10, 15, 20, 50, and 100.
 
+**Results:**  
+- MAD (k=5): 1.5184  
+- MAD (k=10): 1.5040  
+- MAD (k=15): 1.5020  
+- MAD (k=20): 1.5013  
+- MAD (k=50): 1.5012  
+- MAD (k=100): 1.5012  
+
 **Observations:**  
 - The MAD decreased noticeably from k = 5 to k = 10.
 - Beyond k ≈ 20, the MAD plateaued, suggesting that after a moderate number of similar users are considered, additional users provide little extra predictive power.
 
+*Below is the corresponding graph:*
+![Experiment A Graph](fig/exp1.png)
+
 **Conclusion:**  
 This experiment indicates that a neighborhood size in the range of **15–20** is sufficient to achieve near-optimal prediction performance.
-
 
 ### Experiment B: Varying the Train/Test Split Ratio
 
 **Setup:**  
 Using a fixed neighborhood size (k = 5), the training set was varied from 60% to 90% of the data (in increments of 5%).
+
+**Results (with k=5):**  
+- MAD (Train Ratio = 0.60): 1.5380  
+- MAD (Train Ratio = 0.65): 1.5328  
+- MAD (Train Ratio = 0.70): 1.5217  
+- MAD (Train Ratio = 0.75): 1.5184  
+- MAD (Train Ratio = 0.80): 1.5097  
+- MAD (Train Ratio = 0.85): 1.5092  
+- MAD (Train Ratio = 0.90): 1.5048  
+
+*Below is the corresponding graph :*
+
+![Experiment B Graph](fig/exp2.png)
 
 **Observations:**  
 - The MAD steadily decreased as the training ratio increased, indicating better predictions with more training data.
@@ -122,3 +145,8 @@ The model benefits from more training data, but after reaching roughly **80–90
 - scikit-learn
 
 - matplotlib
+
+
+### Conclusion
+
+This project demonstrates how collaborative filtering can be used for book rating prediction. The experiments show that the model's performance is sensitive to both the number of neighbors used in the prediction and the amount of training data. With these insights, further refinements can be implemented to improve the accuracy and robustness of the recommendations.
